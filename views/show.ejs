@@ -8,24 +8,25 @@
 </head>
 <body>
     <%- include('./partials/nav') %>
-    
-    <h1><%= character.name %></h1>
+    <h1 id="char-name"><%= character.name %></h1>
+    <p id="char-actor">Played by: <%= character.actor %></p>
     <img src="<%= character.image%>" alt="<%= character.name%>" class="character-img"/>
+    
     <ul>
-        <li>Played by: <%= character.actor %></li>
         <li>Appears in: <%= character.episodes  %> episodes</li>
         <% if (character.occupation) { %>
             <li>Occupation: <%= character.occupation  %></li>
         <% } %>
         <li>Description: <%= character.description  %></li>
     </ul>
-    <a href="/characters/<%=character.id%>/edit">
-        <button>Edit <%= character.name %></button>
-    </a>
-    <div class="edit-delete-btns">
-    <form action="/characters/<%=character.id%>?_method=DELETE" method="POST">
-        <button type="submit">Delete <%= character.name %></button>
-      </form>
+    
+    <div class="edit-delete-div">
+        <button>
+            <a href="/characters/<%=character.id%>/edit" class="edit-delete-btns" id="edit-btn">Edit <%= character.name %></a>
+        </button>      
+        <form action="/characters/<%=character.id%>?_method=DELETE" method="POST" class="edit-delete-btns">
+            <button type="submit">Delete <%= character.name %></button>
+        </form>
     </div>
     <div> 
         <a href="/characters">Back to Characters</a>

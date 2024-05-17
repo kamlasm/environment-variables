@@ -9,7 +9,7 @@
 <body>
     <%- include('./partials/nav') %>
     <h1>Add your favourite Friends character!</h1>
-    <form action="/characters" method="POST">
+    <form action="/characters" method="POST" class="add-edit-forms">
         <div>
             <label for="name">Name:</label>
             <input type="text" name="name" id="name">
@@ -26,12 +26,12 @@
             <label for="occupation">Occupation (optional):</label>
             <input type="text" name="occupation" id="occupation">
         </div>
-        <div>
+        <div class="description">
             <label for="description">Description:</label>
             <textarea type="text" name="description" id="description"></textarea>
         </div>
         <div>
-            <label for="image">Image:</label>
+            <label for="image">Image link:</label>
             <input type="text" name="image" id="image">
         </div>   
         <button type=submit>Submit</button>           

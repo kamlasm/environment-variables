@@ -1,13 +1,44 @@
+/* All pages */
 body {
-    background-color: rgb(210, 233, 240);
+    background-color: #DBFCFF;
     font-family: 'Gill Sans MT';
+    color: #320e3b;
+    font-size: 1.25em;
 }
 
+nav > a {
+    padding: 5px;
+}
+
+a:visited {
+    color:#320e3b;
+}
+
+button {
+    padding: 5px;
+    margin-top: 10px;
+    font-family: 'Gill Sans MT';
+    color:#320e3b;
+    font-size: 1em;
+    border-radius: 5px;
+    background-color: #F9B5AC;
+    cursor: pointer;
+}
+
+/* Home page */
+#friends-logo {
+    margin-left: 10px;  
+}
+
+/* Characters page */
 #characters {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-between;
+}
+
+#characters > div {
+    margin: 0 10px 10px 0;
 }
 
 #characters h3 {
@@ -19,6 +50,51 @@ body {
    width: 265px;
 }
 
+/* Show pages */
+#char-name {
+    margin-bottom: 5px;
+}
+
+#char-actor {
+    margin-top: 5px;
+    font-style: italic;
+}
+
+.edit-delete-div {
+    margin: 20px 0;
+}
+
 .edit-delete-btns {
-    display: inline-block;
+    display: inline;
+    margin: 0 10px;
+}
+
+#edit-btn {
+    text-decoration: none;
+    color:#320e3b;
+}
+
+/* New and edit pages */
+.add-edit-forms > div {
+    margin-bottom: 10px;
+}
+
+label {
+    padding-right: 5px;
+}
+
+input, textarea {
+    border-radius: 5px;
+    font-family: 'Gill Sans MT';
+    color:#320e3b;
+    font-size: 1em;
+    padding: 1px 0 1px 3px;
+}
+
+textarea {
+    min-height: 70px;
+}
+
+.description {
+    display: flex;
 }
