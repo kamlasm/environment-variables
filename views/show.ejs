@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= character.name %></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" type="text/css">
+</head>
+<body>
+    <%- include('./partials/nav') %>
+    
+    <h1><%= character.name %></h1>
+    <img src="<%= character.image%>" alt="<%= character.name%>" class="character-img"/>
+    <ul>
+        <li>Played by: <%= character.actor %></li>
+        <li>Appears in: <%= character.episodes  %> episodes</li>
+        <% if (character.occupation) { %>
+            <li>Occupation: <%= character.occupation  %></li>
+        <% } %>
+        <li>Description: <%= character.description  %></li>
+    </ul>
+    <a href="/characters/<%=character.id%>/edit">
+        <button>Edit <%= character.name %></button>
+    </a>
+    <div class="edit-delete-btns">
+    <form action="/characters/<%=character.id%>?_method=DELETE" method="POST">
+        <button type="submit">Delete <%= character.name %></button>
+      </form>
+    </div>
+    <div> 
+        <a href="/characters">Back to Characters</a>
+    </div>
+</body>
+</html>

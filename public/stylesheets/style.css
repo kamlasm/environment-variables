@@ -1,0 +1,24 @@
+body {
+    background-color: rgb(210, 233, 240);
+    font-family: 'Gill Sans MT';
+}
+
+#characters {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+#characters h3 {
+    margin-top: 0;
+}
+
+.character-img {
+   height: 345px;
+   width: 265px;
+}
+
+.edit-delete-btns {
+    display: inline-block;
+}

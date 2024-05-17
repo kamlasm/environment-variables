@@ -1,22 +1,32 @@
-require('dotenv').config();
-const express = require('express');
-// ! Require mongoose
+// ! Require dependencies
+require('dotenv').config()
+const express = require('express')
+const app = express()
 const mongoose = require('mongoose')
-// ! Require model
 const Characters = require('./models/characters')
-const port = 3000;
+const methodOverride = require("method-override")
+const morgan = require("morgan")
+const path = require('path')
 
-const app = express();
-app.use(express.static('public'))
+//  ! Define port to use
+const port = 3000;
 
 // ! Connect to MongoDB via mongoose
 mongoose.connect(process.env.MONGODB_URI)
 
+//  ! Middleware
+app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.json()) // expect JSON in request
+app.use(express.urlencoded({ extended: false})) // expect data from our form
+app.use(methodOverride('_method')) // to override requests in browser
+app.use(morgan('dev')) // to log our HTTP requests
+
+//  ! A route to render the homepage
 app.get('/', (req, res) => {
   res.render('home.ejs');
 });
 
-// ! A route that gets ALL documents from the 'Friends' collection and sends this back to our client
+// ! A route that gets ALL documents from the 'Friends' collection and renders on 'Characters' page
 app.get('/characters', async (req, res) => {
   const characters = await Characters.find()
   res.render('characters.ejs', {
@@ -24,37 +34,46 @@ app.get('/characters', async (req, res) => {
   })
 })
 
-// ! Get one document from the 'Friends' collection using its Id and send response back to the client
+// ! Get one document from the 'Friends' collection using its Id and render it on a "show" page
 app.get('/characters/:characterId', async (req, res) => {
   const character = await Characters.findById(req.params.characterId)
-  res.render('profile.ejs', {
+  res.render('show.ejs', {
     character,
   })
 })
 
-// ! Tell express to expect some json in the request
-app.use(express.json())
+// ! A route which renders a page for the user to add new character
+app.get('/new-character', (req, res) => {
+  res.render('new.ejs')
+})
 
-// ! Posting a new document to the 'Friends' collection and send it back to the client
+// ! Creating (posting) a new character based on info submitted in form and display "show" page
 app.post('/characters', async (req, res) => {
   const character = await Characters.create(req.body)
-  res.send(character)
+  res.redirect(`/characters/${character.id}`) //  redirect user once form is submitted
 })
 
-// ! Updating (putting) a document in the 'Friends' collection and send response back to the client
+// ! Updating (putting) a document in the 'Friends' collection 
 app.put('/characters/:characterId', async (req, res) => {
-  const characterId = req.params.characterId
-  const character = await Characters.findByIdAndUpdate(characterId, req.body, { new: true })
-  res.send(character)
+  const character = await Characters.findByIdAndUpdate(req.params.characterId, req.body, { new: true })
+  res.redirect(`/characters/${character.id}`)
 })
 
-// ! Deleting a document in the 'Friends' collection and send response back to the client
+// ! Deleting a document in the 'Friends' collection 
 app.delete('/characters/:characterId', async (req, res) => {
-  const characterId = req.params.characterId
-  const character = await Characters.findByIdAndDelete(characterId)
-  res.send(character)
+  const character = await Characters.findById(req.params.characterId)
+  res.redirect('/characters')
 })
 
+// ! Get a route to the edit page 
+app.get('/characters/:characterId/edit', async (req, res) => {
+  const character = await Characters.findById(req.params.characterId)
+  res.render('edit.ejs', {
+    character,
+  })
+})
+
+//  ! Run port to continuously listen for HTTP requests
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
   console.log(`Your secret is ${process.env.SECRET_PASSWORD}`);
