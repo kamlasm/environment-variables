@@ -12,15 +12,15 @@
     <form action="/characters" method="POST" class="add-edit-forms">
         <div>
             <label for="name">Name:</label>
-            <input type="text" name="name" id="name">
+            <input type="text" name="name" id="name" required>
         </div>
         <div>
             <label for="actor">Actor:</label>
-            <input type="text" name="actor" id="actor">
+            <input type="text" name="actor" id="actor" required>
         </div>
         <div>
             <label for="episodes">Episodes:</label>
-            <input type="text" name="episodes" id="episodes">
+            <input type="number" name="episodes" id="episodes" required>
         </div>
         <div>
             <label for="occupation">Occupation (optional):</label>
@@ -28,11 +28,11 @@
         </div>
         <div class="description">
             <label for="description">Description:</label>
-            <textarea type="text" name="description" id="description"></textarea>
+            <textarea type="text" name="description" id="description" required></textarea>
         </div>
         <div>
             <label for="image">Image link:</label>
-            <input type="text" name="image" id="image">
+            <input type="text" name="image" id="image" required>
         </div>   
         <button type=submit>Submit</button>           
     </form>

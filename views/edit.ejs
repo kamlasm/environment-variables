@@ -12,15 +12,15 @@
     <form action="/characters/<%=character.id%>?_method=PUT" method="POST" class="add-edit-forms">
         <div>
             <label for="name">Name:</label>
-            <input type="text" name="name" id="name" value="<%= character.name %>">
+            <input type="text" name="name" id="name" value="<%= character.name %>" required>
         </div>
         <div>
             <label for="actor">Actor:</label>
-            <input type="text" name="actor" id="actor" value="<%= character.actor %>">
+            <input type="text" name="actor" id="actor" value="<%= character.actor %>" required>
         </div>
         <div>
             <label for="episodes">Episodes:</label>
-            <input type="text" name="episodes" id="episodes" value="<%= character.episodes %>">
+            <input type="number" name="episodes" id="episodes" value="<%= character.episodes %>" required>
         </div>
         <div>
             <label for="occupation">Occupation (optional):</label>
@@ -28,13 +28,16 @@
         </div>
         <div class="description">
             <label for="description">Description:</label>
-            <textarea type="text" name="description" id="description"><%= character.description %></textarea>
+            <textarea type="text" name="description" id="description" required><%= character.description %></textarea >
         </div>
         <div>
             <label for="image">Image link:</label>
-            <input type="text" name="image" id="image" value="<%= character.image %>">
+            <input type="text" name="image" id="image" value="<%= character.image %>" required>
         </div>   
         <button type=submit>Update</button>           
-    </form>    
+    </form>
+    <div class="back-link"> 
+        <a href="/characters/<%= character.id %>">Back to <%= character.name %></a>
+    </div>    
 </body>
 </html>

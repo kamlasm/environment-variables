@@ -58,6 +58,7 @@ button {
 #char-actor {
     margin-top: 5px;
     font-style: italic;
+    font-size: 1.25em;
 }
 
 .edit-delete-div {
@@ -97,4 +98,8 @@ textarea {
 
 .description {
     display: flex;
+}
+
+.back-link {
+    margin-top: 20px;
 }
