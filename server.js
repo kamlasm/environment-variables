@@ -8,6 +8,12 @@ const methodOverride = require("method-override")
 const morgan = require("morgan")
 const path = require('path')
 
+// Import express-session to manage user sessions
+const session = require('express-session')
+
+//  Import the auth controller
+const authController = require('./controllers/auth.js')
+
 //  Define port to use
 const port = 3000;
 
@@ -20,10 +26,21 @@ app.use(express.json()) // expect JSON in request
 app.use(express.urlencoded({ extended: false})) // expect data from our form
 app.use(methodOverride('_method')) // to override requests in browser
 app.use(morgan('dev')) // to log our HTTP requests
+// Use sessions for auth
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true,
+}))
+
+// Use the auth controller for any requests that start with /auth
+app.use('/auth', authController)
 
 //  A route to render the homepage
 app.get('/', (req, res) => {
-  res.render('home.ejs');
+  res.render('home.ejs', {
+    user: req.session.user
+  });
 });
 
 // A route that gets ALL documents from the collection and renders on 'Characters' page
@@ -31,6 +48,7 @@ app.get('/characters', async (req, res) => {
   const characters = await Characters.find()
   res.render('characters.ejs', {
     characters,
+    user: req.session.user
   })
 })
 
@@ -39,12 +57,15 @@ app.get('/characters/:characterId', async (req, res) => {
   const character = await Characters.findById(req.params.characterId)
   res.render('show.ejs', {
     character,
+    user: req.session.user
   })
 })
 
 // A route that renders a page for the user to add a new character
 app.get('/new-character', (req, res) => {
-  res.render('new.ejs')
+  res.render('new.ejs', {
+    user: req.session.user
+  })
 })
 
 // A route that creates (POSTs) a new character based on info submitted in form
@@ -62,8 +83,13 @@ app.put('/characters/:characterId', async (req, res) => {
 
 // A route to delete a document in the collection 
 app.delete('/characters/:characterId', async (req, res) => {
-  const character = await Characters.findByIdAndDelete(req.params.characterId)
-  res.redirect('/characters')
+  if (req.session.user) {
+    const character = await Characters.findByIdAndDelete(req.params.characterId)
+    res.redirect('/characters')
+  } else {
+      res.send('You must be logged in to delete a character.')
+  }
+
 })
 
 // A route to the 'edit' page
@@ -71,6 +97,7 @@ app.get('/characters/:characterId/edit', async (req, res) => {
   const character = await Characters.findById(req.params.characterId)
   res.render('edit.ejs', {
     character,
+    user: req.session.user
   })
 })
 
