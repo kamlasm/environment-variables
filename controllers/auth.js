@@ -2,10 +2,10 @@ const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcrypt')
 const User = require('../models/user.js')
+let prevUrl
 
 router.get('/sign-up', (req, res) => {
-    res.render('auth/sign-up.ejs', {
-        user: req.session.user
+    res.render('auth/sign-up.ejs', {      
     })
 })
 
@@ -36,8 +36,9 @@ router.post('/sign-up', async (req, res) => {
 })
 
 router.get('/sign-in', (req, res) => {
-    res.render('auth/sign-in.ejs', {
-        user: req.session.user
+    // If user was redirected to sign-in page, store URL user tried to access 
+    prevUrl = req.query.redirectUrl
+    res.render('auth/sign-in.ejs', {    
     })
 })
 
@@ -59,7 +60,12 @@ router.post('/sign-in', async (req, res) => {
     }
     
     req.session.save(() => {
-        res.redirect('/')  
+    // If user was trying to access protected page send user back to that page, else send to homepage
+        if (prevUrl) {
+        res.redirect(`${prevUrl}`)
+        } else {
+            res.redirect('/')
+        } 
     })
 })
 

@@ -9,7 +9,6 @@
 <body>
     <%- include('./partials/nav') %>
     <h1>Add your favourite Friends character!</h1>
-    <% if (user) { %> 
     <form action="/characters" method="POST" class="add-edit-forms">
         <div>
             <label for="name">Name:</label>
@@ -37,8 +36,5 @@
         </div>   
         <button type=submit>Submit</button>           
     </form>
-    <% } else { %> 
-        <p>You must be signed in to add a character!</p>
-    <% } %>
 </body>
 </html>

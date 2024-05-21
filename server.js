@@ -17,8 +17,11 @@ const authController = require('./controllers/auth.js')
 // Import MongoStore
 const MongoStore = require('connect-mongo')
 
-//  Define port to use
-const port = 3000;
+// Import is-signed-in 
+const isSignedIn = require('./middleware/is-signed-in.js')
+
+// Import pass-user-to-view
+const passUserToView = require('./middleware/pass-user-to-view.js')
 
 // Connect to MongoDB via mongoose
 mongoose.connect(process.env.MONGODB_URI)
@@ -38,6 +41,7 @@ app.use(session({
     mongoUrl: process.env.MONGODB_URI,
   }),
 }))
+app.use(passUserToView)
 
 // Use the auth controller for any requests that start with /auth
 app.use('/auth', authController)
@@ -45,7 +49,6 @@ app.use('/auth', authController)
 //  A route to render the homepage
 app.get('/', (req, res) => {
   res.render('home.ejs', {
-    user: req.session.user
   });
 });
 
@@ -53,8 +56,7 @@ app.get('/', (req, res) => {
 app.get('/characters', async (req, res) => {
   const characters = await Characters.find()
   res.render('characters.ejs', {
-    characters,
-    user: req.session.user
+    characters,    
   })
 })
 
@@ -62,15 +64,13 @@ app.get('/characters', async (req, res) => {
 app.get('/characters/:characterId', async (req, res) => {
   const character = await Characters.findById(req.params.characterId)
   res.render('show.ejs', {
-    character,
-    user: req.session.user
+    character,    
   })
 })
 
 // A route that renders a page for the user to add a new character
-app.get('/new-character', (req, res) => {
+app.get('/new-character', isSignedIn, (req, res) => {
   res.render('new.ejs', {
-    user: req.session.user
   })
 })
 
@@ -88,24 +88,21 @@ app.put('/characters/:characterId', async (req, res) => {
 })
 
 // A route to delete a document in the collection 
-app.delete('/characters/:characterId', async (req, res) => {
-  if (req.session.user) {
+app.delete('/characters/:characterId', isSignedIn, async (req, res) => {
     const character = await Characters.findByIdAndDelete(req.params.characterId)
     res.redirect('/characters')
-  } else {
-      res.send('You must be logged in to delete a character.')
-  }
-
 })
 
 // A route to the 'edit' page
-app.get('/characters/:characterId/edit', async (req, res) => {
+app.get('/characters/:characterId/edit', isSignedIn, async (req, res) => {
   const character = await Characters.findById(req.params.characterId)
   res.render('edit.ejs', {
-    character,
-    user: req.session.user
+    character,    
   })
 })
+
+// Default to port 3000 if no port in env file
+const port = process.env.PORT ? process.env.PORT : 3000
 
 //  Run port to continuously listen for HTTP requests
 app.listen(port, () => {
