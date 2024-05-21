@@ -14,6 +14,9 @@ const session = require('express-session')
 //  Import the auth controller
 const authController = require('./controllers/auth.js')
 
+// Import MongoStore
+const MongoStore = require('connect-mongo')
+
 //  Define port to use
 const port = 3000;
 
@@ -31,6 +34,9 @@ app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGODB_URI,
+  }),
 }))
 
 // Use the auth controller for any requests that start with /auth
