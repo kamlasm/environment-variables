@@ -19,12 +19,24 @@
         <% } %>
         <li>Description: <%= character.description  %></li>
     </ul>
-    
-    <div class="edit-delete-div">
-        <button>
-            <a href="/characters/<%=character.id%>/edit" class="edit-delete-btns" id="edit-btn">Edit <%= character.name %></a>
+
+    <% if (character.quotes.length !== 0) { %>
+        <h3>Favourite quotes: </h3>
+        <ul>
+            <% character.quotes.forEach(quote => { %>
+                <li><%= quote.text  %></li>
+            <% }) %>  
+        </ul>      
+    <% } %>
+
+    <div class="show-page-actions-div">
+        <button class="action-btns">
+            <a href="/characters/<%=character.id%>/quote"  class="action-links">Add a quote</a>
         </button>      
-        <form action="/characters/<%=character.id%>?_method=DELETE" method="POST" class="edit-delete-btns">
+        <button class="action-btns">
+            <a href="/characters/<%=character.id%>/edit" class="action-links">Edit <%= character.name %></a>
+        </button>      
+        <form action="/characters/<%=character.id%>?_method=DELETE" method="POST" class="action-btns">
             <button type="submit">Delete <%= character.name %></button>
         </form>
     </div>

@@ -61,16 +61,16 @@ button {
     font-size: 1.25em;
 }
 
-.edit-delete-div {
+.show-page-actions-div {
     margin: 20px 0;
 }
 
-.edit-delete-btns {
+.action-btns {
     display: inline;
-    margin: 0 10px;
+    margin-right: 5px;
 }
 
-#edit-btn {
+.action-links {
     text-decoration: none;
     color:#320e3b;
 }

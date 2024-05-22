@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Quote</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" type="text/css">
+</head>
+<body>
+    <%- include('./partials/nav') %>
+    <h1>Add your favourite <%= character.name %> quote!</h1>
+    <form action="/characters/<%= character.id %>/quote" method="POST" class="add-edit-forms">
+        <div class="description">
+            <label for="text">Text:</label>
+            <textarea type="text" name="text" id="text" required></textarea>
+        </div>
+        <button type=submit>Add quote</button>           
+    </form>
+    <div class="back-link"> 
+        <a href="/characters/<%= character.id %>">Back to <%= character.name %></a>
+    </div>   
+</body>
+</html>

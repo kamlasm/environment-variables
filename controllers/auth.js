@@ -61,7 +61,9 @@ router.post('/sign-in', async (req, res) => {
         }
     
         req.session.user = {
-            username: userInDatabase.username
+            username: userInDatabase.username,
+            // Add user Id from Mongo DB to session cookie
+            userId: userInDatabase._id
         }
         
         req.session.save(() => {
