@@ -14,11 +14,11 @@ router.post('/sign-up', async (req, res) => {
         const userInDatabase = await User.findOne({ username: req.body.username})
     
         if (userInDatabase) {
-            return res.send('Username already taken')
+            throw new Error('Username already taken. Please try a different username.')
         }
     
         if (req.body.password !== req.body.confirmPassword) {
-            return res.send('Passwords don\'t match')
+            throw new Error('Passwords don\'t match. Please try again.')
         }
     
         const hashedPassword = bcrypt.hashSync(req.body.password, 10)
@@ -35,7 +35,7 @@ router.post('/sign-up', async (req, res) => {
             res.redirect('/')
         })
     } catch (error) {
-        res.render('error.ejs', { msg: error.message })
+        res.render('auth/sign-up.ejs', { msg: error.message })
     }
 })
 
@@ -51,13 +51,13 @@ router.post('/sign-in', async (req, res) => {
         const userInDatabase = await User.findOne({ username: req.body.username })
 
         if (!userInDatabase) {
-            return res.send('Login failed. Please try again.')
+            throw new Error('Login failed. Please try again.')
         }
     
         const validPassword = bcrypt.compareSync(req.body.password, userInDatabase.password) 
     
         if (!validPassword) {
-            return res.send('Login failed. Please try again.')
+            throw new Error('Login failed. Please try again.')
         }
     
         req.session.user = {
@@ -73,7 +73,7 @@ router.post('/sign-in', async (req, res) => {
             } 
         })
     } catch (error) {
-        res.render('error.ejs', { msg: error.message })
+        res.render('auth/sign-in.ejs', { msg: error.message })
     }
 })
 

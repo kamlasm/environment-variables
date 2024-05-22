@@ -4,7 +4,7 @@
 //  Add query parameter to store page user tried to access
 const isSignedIn = (req, res, next) => {
     if (req.session.user) return next()
-    res.redirect(`/auth/sign-in?redirectUrl=${req.url}`)
+    res.redirect(`/auth/sign-in?redirectUrl=/characters${req.url}`)
 }
 
 module.exports = isSignedIn

@@ -11,11 +11,15 @@
     <h1> Sign In</h1>
     <form action="/auth/sign-in" method="POST">
         <label for="username">Username:</label>
-        <input type="text" name="username" id="username"/>
+        <input type="text" name="username" id="username" required/>
 
         <label for="password">Password</label>
-        <input type="password" name="password" id="password"/>
+        <input type="password" name="password" id="password" required/>
         
-        <button type="submit">Sign In</button>     
+        <button type="submit">Sign In</button> 
+        
+        <% if (typeof msg !== 'undefined') { %>
+            <p> <%= msg %> </p>
+        <% } %>    
 </body>
 </html>
