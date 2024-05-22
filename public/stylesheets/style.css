@@ -10,7 +10,7 @@ nav > a {
     padding: 5px;
 }
 
-a:visited {
+a, a:visited {
     color:#320e3b;
 }
 
@@ -90,6 +90,7 @@ input, textarea {
     color:#320e3b;
     font-size: 1em;
     padding: 1px 0 1px 3px;
+    border: 1px solid #F9B5AC;
 }
 
 textarea {
